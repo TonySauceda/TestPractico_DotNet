@@ -1,0 +1,28 @@
+﻿@using Hotel.DataAccess.BDModels
+@{
+    ViewData["Title"] = "Tipos Habitación";
+}
+
+<div id="divTipoHabitacion">
+
+    <div class="row">
+        <div id="tabla" class="col-12">
+            <partial name="@Hotel.WebApp.Utils.Constantes.VistaParcial.TablaTipoHabitacion" />
+        </div>
+    </div>
+
+    <script>
+        async function obtenerTiposHabitacion() {
+            const url = "@(Url.Action("ObtenerTiposHabitacion"))";
+
+            let response = await fetch(url);
+
+            var vista = await response.text();
+            const tabla = document.querySelector("#divTipoHabitacion #tabla");
+            tabla.innerHTML = vista;
+        }
+
+        obtenerTiposHabitacion();
+
+    </script>
+</div>

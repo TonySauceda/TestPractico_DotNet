@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "6e313d25-51df-4f84-a47a-1cfc4793c39e",
+		"name": "Test02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Agregar Usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Adrian\",\r\n  \"lastname\": \"Fuentes\",\r\n  \"surname\": \"Fuentes\",\r\n  \"rfc\": \"XAXX010101000\",\r\n  \"workshift\": \"Matutino\",\r\n  \"gender\": \"Masculino\",\r\n  \"pin\": \"444555666\",\r\n  \"birthdate\": \"1990-01-01\",\r\n  \"phones\": [\r\n    {\r\n      \"phone\": \"0123456789\",\r\n      \"phoneType\": \"Trabajo\"\r\n    },{\r\n      \"phone\": \"9876543210\",\r\n      \"phoneType\": \"7\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44379/api/v1/Users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44379",
+					"path": [
+						"api",
+						"v1",
+						"Users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44379/api/v1/Users?searchby=",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44379",
+					"path": [
+						"api",
+						"v1",
+						"Users"
+					],
+					"query": [
+						{
+							"key": "searchby",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar Usuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"keyUser\": \"3\",\r\n  \"name\": \"Adrian\",\r\n  \"lastname\": \"Fuentes\",\r\n  \"surname\": \"Fuentes\",\r\n  \"rfc\": \"XAXX010101000\",\r\n  \"workshift\": \"Matutino\",\r\n  \"gender\": \"Masculino\",\r\n  \"pin\": \"444555666\",\r\n  \"birthdate\": \"1990-01-01\",\r\n  \"phones\": [\r\n    {\r\n      \"phone\": \"0123456789\",\r\n      \"phoneType\": \"Trabajo\"\r\n    },{\r\n      \"phone\": \"9876543210\",\r\n      \"phoneType\": \"7\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44379/api/v1/Users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44379",
+					"path": [
+						"api",
+						"v1",
+						"Users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

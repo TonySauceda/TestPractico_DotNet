@@ -1,0 +1,60 @@
+﻿@using Hotel.DataAccess.BDModels
+@model Hotel.WebApp.Models.NuevaReservacionViewModel
+
+@{
+    ViewData["Title"] = "Nueva reservación";
+
+    var clientes = (List<Clientes>)ViewBag.Clientes;
+    var habitaciones = (List<TiposHabitacion>)ViewBag.Habitaciones;
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <span class="text-danger font-weight-bold">@ViewBag.Mensaje</span>
+    </div>
+    <div class="col-12 col-md-4">
+        <form asp-action="Nueva">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ClienteId" class="control-label"></label>
+                <select asp-for="ClienteId" class="form-control">
+                    @foreach (var cliente in clientes)
+                    {
+                        <option value="@cliente.ClienteId">@($"{cliente.Nombre} {cliente.ApellidoPaterno} {cliente.ApellidoMaterno}")</option>
+                    }
+                </select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoHabitacionId" class="control-label"></label>
+                <select asp-for="TipoHabitacionId" class="form-control">
+                    @foreach (var habitacion in habitaciones)
+                    {
+                        <option value="@habitacion.TipoHabitacionId">@($"{habitacion.TipoHabitacion}")</option>
+                    }
+                </select>
+                <span asp-validation-for="TipoHabitacionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" class="form-control" type="date" asp-format="{0:dd/MM/yyyy}" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dias" class="control-label"></label>
+                <input asp-for="Dias" class="form-control" min="1" />
+                <span asp-validation-for="Dias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

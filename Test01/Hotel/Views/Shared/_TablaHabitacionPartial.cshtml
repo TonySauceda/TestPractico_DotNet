@@ -1,0 +1,50 @@
+﻿@model List<Hotel.DataAccess.BDModels.Habitaciones>
+
+@{
+    Layout = "";
+}
+
+<table class="table w-100 table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().HabitacionId)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Habitacion)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().TipoHabitacion.TipoHabitacion)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().TipoHabitacion.Precio)</th>
+            <th>Foto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <tr>
+                <td class="text-center" colspan="100">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Cargando registros...</span>
+                    </div>
+                </td>
+            </tr>
+        }
+        else if (Model.Count == 0)
+        {
+            <tr>
+                <td class="text-center" colspan="100">
+                    <span>No se encontraron registros</span>
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var habitacion in Model)
+            {
+                <tr>
+                    <td>@habitacion.HabitacionId</td>
+                    <td>@habitacion.Habitacion</td>
+                    <td>@habitacion.TipoHabitacion?.TipoHabitacion</td>
+                    <td>@habitacion.TipoHabitacion?.Precio.ToString("C2")</td>
+                    <td><a href="~/img/@(habitacion.TipoHabitacion?.Foto)" target="_blank">Abrir</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

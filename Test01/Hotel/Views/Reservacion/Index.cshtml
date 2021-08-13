@@ -1,0 +1,114 @@
+﻿@using Hotel.DataAccess.BDModels
+@{
+    ViewData["Title"] = "Reservaciones";
+    var clientes = (List<Clientes>)ViewBag.Clientes;
+}
+
+<div id="divReservaciones">
+    <div class="row mb-2">
+        <div class="col-auto align-self-end">
+            <a class="btn btn-primary" asp-area="" asp-controller="Reservacion" asp-action="Nueva">Agregar reservación</a>
+        </div>
+        <div class="col">
+            <label for="cmbCliente">Cliente</label>
+            <select id="cmbCliente" class="form-control">
+                <option value="0">Todos</option>
+                @foreach (var cliente in clientes)
+                {
+                    <option value="@cliente.ClienteId">@($"{cliente.Nombre} {cliente.ApellidoPaterno} {cliente.ApellidoMaterno}")</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label for="txtHabitacion">Habitación</label>
+            <input id="txtHabitacion" class="form-control" type="text" maxlength="3" />
+        </div>
+        <div class="col align-self-end">
+            <button class="btn btn-primary" type="button" onclick="obtenerReservaciones()">Buscar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="tabla" class="col-12">
+            <partial name="@Hotel.WebApp.Utils.Constantes.VistaParcial.TablaReservaciones" />
+        </div>
+    </div>
+
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" backdrop="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                </div>
+                <div class="modal-body text-center">
+                    ¿Estas seguro de eliminar la reservación?
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalCancelar" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button id="btnModalConfirmar" type="button" class="btn btn-danger" onclick="confirmarEliminar()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btnEliminarModal" type="button" class="d-none" data-toggle="modal" data-target="#eliminarModal">
+    </button>
+
+    <script>
+        const btnEliminarModal = document.querySelector("#divReservaciones #btnEliminarModal");
+        const btnModalConfirmar = document.querySelector("#divReservaciones #btnModalConfirmar");
+        const btnModalCancelar = document.querySelector("#divReservaciones #btnModalCancelar");
+
+        async function obtenerReservaciones() {
+            const url = "@(Url.Action("ObtenerReservaciones"))";
+            let filtros = "";
+            const cmbCliente = document.querySelector("#divReservaciones #cmbCliente").value;
+            const txtHabitacion = document.querySelector("#divReservaciones #txtHabitacion").value;
+
+            if (cmbCliente) {
+                filtros = "?clienteId=" + cmbCliente;
+            }
+            if (txtHabitacion) {
+                filtros += filtros === "" ? ("?habitacion=" + txtHabitacion) : ("&habitacion=" + txtHabitacion);
+            }
+
+            let response = await fetch(url + filtros);
+
+            var vista = await response.text();
+            const tabla = document.querySelector("#divReservaciones #tabla");
+            tabla.innerHTML = vista;
+        }
+
+        obtenerReservaciones();
+
+        function eliminarReservacion(id) {
+            btnModalConfirmar.classList.remove("disabled");
+            btnModalCancelar.classList.remove("disabled");
+
+            btnModalConfirmar.setAttribute("data-id", id);
+            $("#divReservaciones #eliminarModal").modal("show");
+        }
+
+        function confirmarEliminar() {
+            btnModalConfirmar.classList.add("disabled");
+            btnModalCancelar.classList.add("disabled");
+            let id = btnModalConfirmar.getAttribute("data-id");
+            $.ajax({
+                type: "POST",
+                url: "@(Url.Action("Eliminar"))",
+                data: {
+                    reservacionId: id
+                },
+                success: function (data) {
+                    if (data.exito) {
+                        obtenerReservaciones();
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                complete: function () {
+                    $("#divReservaciones #eliminarModal").modal("hide");
+                }
+            });
+        }
+    </script>
+</div>

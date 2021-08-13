@@ -1,0 +1,62 @@
+﻿@using Hotel.DataAccess.BDModels
+@{
+    ViewData["Title"] = "Habitaciones";
+
+    var tiposHabitacion = (List<TiposHabitacion>)ViewBag.TiposHabitacion;
+}
+
+<div id="divHabitaciones">
+    <div class="row mb-2">
+        <div class="col">
+            <label for="cmbTipo">Tipo</label>
+            <select id="cmbTipo" class="form-control">
+                <option value="0">Todos</option>
+                @foreach (var tipoHabitacion in tiposHabitacion)
+                {
+                    <option value="@tipoHabitacion.TipoHabitacionId">@tipoHabitacion.TipoHabitacion</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label for="txtHabitacion">Habitación</label>
+            <input id="txtHabitacion" class="form-control" type="text" maxlength="3" />
+        </div>
+        <div class="col align-self-end">
+            <button id="btnBuscar" class="btn btn-primary" type="button">Buscar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="tabla" class="col-12">
+            <partial name="@Hotel.WebApp.Utils.Constantes.VistaParcial.TablaHabitacion" />
+        </div>
+    </div>
+
+    <script>
+        async function obtenerHabitaciones() {
+            const url = "@(Url.Action("ObtenerHabitaciones"))";
+            const cmbTipo = document.querySelector("#divHabitaciones #cmbTipo").value;
+            const txtHabitacion = document.querySelector("#divHabitaciones #txtHabitacion").value;
+
+            let filtros = "";
+            if (cmbTipo) {
+                filtros += "?tipo=" + cmbTipo;
+            }
+            if (txtHabitacion) {
+                filtros += filtros === "" ? ("?habitacion=" + txtHabitacion) : ("&habitacion=" + txtHabitacion)
+            }
+
+            let response = await fetch(url + filtros);
+
+            var vista = await response.text();
+            const tabla = document.querySelector("#divHabitaciones #tabla");
+            tabla.innerHTML = vista;
+        }
+
+        obtenerHabitaciones();
+
+        let btnBuscar = document.querySelector("#divHabitaciones #btnBuscar");
+        btnBuscar.addEventListener("click", obtenerHabitaciones);
+
+    </script>
+</div>

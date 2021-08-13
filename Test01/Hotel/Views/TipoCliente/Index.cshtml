@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Tipos Cliente";
+}
+
+<div id="divTiposCliente">
+
+    <div class="row">
+        <div id="tabla" class="col-12">
+            <partial name="@Hotel.WebApp.Utils.Constantes.VistaParcial.TablaTipoCliente" />
+        </div>
+    </div>
+
+    <script>
+        async function obtenerTiposCliente() {
+            const url = "@(Url.Action("ObtenerTiposCliente"))";
+
+            let response = await fetch(url);
+
+            var vista = await response.text();
+            const tabla = document.querySelector("#divTiposCliente #tabla");
+            tabla.innerHTML = vista;
+        }
+
+        obtenerTiposCliente();
+
+    </script>
+</div>

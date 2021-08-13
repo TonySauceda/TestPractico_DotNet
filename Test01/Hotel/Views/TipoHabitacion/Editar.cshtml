@@ -1,0 +1,38 @@
+﻿@using Hotel.DataAccess.BDModels
+@model Hotel.WebApp.Models.TipoHabitacionViewModel
+
+@{
+    ViewData["Title"] = "Editar tipo habitación";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <span class="text-danger font-weight-bold">@ViewBag.Mensaje</span>
+    </div>
+    <div class="col-12 col-md-4">
+        <form asp-action="Editar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="TipoHabitacionId" class="form-control" type="hidden" />
+            <div class="form-group">
+                <label asp-for="TipoHabitacion" class="control-label"></label>
+                <input asp-for="TipoHabitacion" class="form-control" />
+                <span asp-validation-for="TipoHabitacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Precio" class="control-label"></label>
+                <input asp-for="Precio" class="form-control" />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

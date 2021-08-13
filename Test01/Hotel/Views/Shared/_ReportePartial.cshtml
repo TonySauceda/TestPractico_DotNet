@@ -1,0 +1,31 @@
+﻿@model Hotel.WebApp.Models.ReporteViewModel
+
+@{
+    Layout = "";
+}
+
+@if (Model == null)
+{
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando reporte...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">No. de reservaciones</label>
+            <input class="form-control" type="text" readonly value="@Model.TotalReservaciones" />
+        </div>
+        <div class="col-12">
+            <label class="control-label">Total descuentos</label>
+            <input class="form-control" type="text" readonly value="@Model.Descuento.ToString("C2")" />
+        </div>
+        <div class="col-12">
+            <label class="control-label">Total</label>
+            <input class="form-control" type="text" readonly value="@Model.Total.ToString("C2")" />
+        </div>
+    </div>
+}

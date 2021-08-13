@@ -1,0 +1,42 @@
+﻿@using Hotel.DataAccess.BDModels
+@{
+    ViewData["Title"] = "Reservaciones";
+}
+
+<div id="divReporte">
+    <div class="row mb-2">
+        <div class="col">
+            <label for="txtFecha">Fecha</label>
+            <input id="txtFecha" class="form-control" type="month" />
+        </div>
+        <div class="col align-self-end">
+            <button class="btn btn-primary" type="button" onclick="obtenerReservaciones()">Consultar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="datos" class="col-12">
+            <partial name="@Hotel.WebApp.Utils.Constantes.VistaParcial.Reporte" />
+        </div>
+    </div>
+
+    <script>
+
+        const placeHolderLoading = '<div class="text-center"><div class="spinner-border" role="status"><span class="sr-only">Cargando reporte...</span></div></div>';
+
+
+        async function obtenerReservaciones() {
+            const datos = document.querySelector("#divReporte #datos");
+            datos.innerHTML = placeHolderLoading;
+            const url = "@(Url.Action("ObtenerReporte"))";
+            const fecha = document.querySelector("#divReporte #txtFecha").value
+
+            let response = await fetch(url + "?fecha=" + fecha);
+
+            var vista = await response.text();
+            datos.innerHTML = vista;
+        }
+
+        obtenerReservaciones();
+    </script>
+</div>
